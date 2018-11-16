@@ -12,7 +12,15 @@ namespace StorageService
     [ServiceContract]
     public interface IService1
     {
-
+        //HTTP
+        //Get all
+        [OperationContract]
+        [WebInvoke(
+                Method = "GET",
+                ResponseFormat = WebMessageFormat.Json,
+                UriTemplate = "komponenter")
+        ]
+        List<Komponenter> GetKomponenter();
     }
 
     
