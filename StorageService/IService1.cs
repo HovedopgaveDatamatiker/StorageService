@@ -21,6 +21,14 @@ namespace StorageService
                 UriTemplate = "komponenter")
         ]
         List<Komponenter> GetKomponenter();
+
+        //Delete
+        [WebInvoke(
+                Method = "DELETE",
+                ResponseFormat = WebMessageFormat.Json,
+                UriTemplate = "komponenter?id={id}")
+        ]
+        void DeleteKompoent(int id);
     }
 
     
