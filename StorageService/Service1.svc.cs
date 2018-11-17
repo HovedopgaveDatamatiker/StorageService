@@ -22,8 +22,7 @@ namespace StorageService
                "Server=tcp:natascha.database.windows.net,1433;Initial Catalog=School;Persist Security Info=False;User ID=nataschajakobsen;Password=Roskilde4000;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         #endregion
 
-
-        #region GET
+        #region GET method
         public List<Komponenter> GetKomponenter()
         {
             List<Komponenter> liste = new List<Komponenter>(); //ny instans af komponent
@@ -55,7 +54,7 @@ namespace StorageService
         }
         #endregion
 
-        #region DELETE
+        #region DELETE method
         public void DeleteKompoent(int id)
         {
             SqlConnection conn = new SqlConnection(connectingString);
