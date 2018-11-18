@@ -63,9 +63,10 @@ namespace StorageService
             command.Connection = conn;
             conn.Open(); //åbner forbindelsen 
 
-            command.CommandText = @"INSERT INTO Komponenter(Titel, Specification, Price, Bulk, Link, Note, EstDelivery) 
-                                VALUES (@Titel, @Specification, @Price, @Bulk, @Link, @Note, @EstDelivery)";
+            command.CommandText = @"INSERT INTO Components(Id, Titel, Specification, Price, Bulk, Link, Note, EstDelivery) 
+                                VALUES (@id, @Titel, @Specification, @Price, @Bulk, @Link, @Note, @EstDelivery)";
 
+            command.Parameters.AddWithValue("@id", newKomponent.Id);
             command.Parameters.AddWithValue("@Titel", newKomponent.Titel);
             command.Parameters.AddWithValue("@Specification ", newKomponent.Specification);
             command.Parameters.AddWithValue("@Price", newKomponent.Price);
