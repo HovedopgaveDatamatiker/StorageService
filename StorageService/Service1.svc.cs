@@ -54,6 +54,32 @@ namespace StorageService
         }
         #endregion
 
+        #region POST method
+        public void AddKomponent(Komponenter newKomponent)
+        {
+            SqlConnection conn = new SqlConnection(connectingString); //laver en ny instans af SqlConnection og kalder den conn.
+            SqlCommand command = new SqlCommand(); //ny instans af SqlCommand og kalder den command
+
+            command.Connection = conn;
+            conn.Open(); //åbner forbindelsen 
+
+            command.CommandText = @"INSERT INTO Komponenter(Titel, Specification, Price, Bulk, Link, Note, EstDelivery) 
+                                VALUES (@Titel, @Specification, @Price, @Bulk, @Link, @Note, @EstDelivery)";
+
+            command.Parameters.AddWithValue("@Titel", newKomponent.Titel);
+            command.Parameters.AddWithValue("@Specification ", newKomponent.Specification);
+            command.Parameters.AddWithValue("@Price", newKomponent.Price);
+            command.Parameters.AddWithValue("@Bulk", newKomponent.Bulk);
+            command.Parameters.AddWithValue("@Link", newKomponent.Link);
+            command.Parameters.AddWithValue("@Note", newKomponent.Note);
+            command.Parameters.AddWithValue("@EstDelivery", newKomponent.EstDelivery);
+
+            command.ExecuteNonQuery(); //udfører SQL statement "command"
+            conn.Close();
+        }
+
+        #endregion
+
         #region DELETE method
         public void DeleteKompoent(int id)
         {
