@@ -38,13 +38,13 @@ namespace StorageService
                     Komponenter komponent = new Komponenter
                     {
                         Id = reader.GetInt32(0),
-                        Titel = reader.GetString(1),
+                        Title = reader.GetString(1),
                         Specification = reader.GetString(2),
                         Price = reader.GetInt32(3),
-                        Bulk = reader.GetInt32(4),
-                        Link = reader.GetString(5),
-                        Note = reader.GetString(6),
-                        EstDelivery = reader.GetInt32(7)
+                        Link = reader.GetString(4),
+                        Note = reader.GetString(5),
+                        EstDelivery = reader.GetInt32(6),
+                        Quantity = reader.GetInt32(7)
                     };
                     liste.Add(komponent);
                 }
@@ -63,24 +63,24 @@ namespace StorageService
             command.Connection = conn;
             conn.Open(); //åbner forbindelsen 
 
-            command.CommandText = @"INSERT INTO Components(Id, Titel, Specification, Price, Bulk, Link, Note, EstDelivery) 
-                                VALUES (@id, @Titel, @Specification, @Price, @Bulk, @Link, @Note, @EstDelivery)";
+            command.CommandText = @"INSERT INTO Components(Id, Title, Specification, Price, Link, Note, EstDelivery, Quantity) 
+                                VALUES (@id, @Title, @Specification, @Price, @Link, @Note, @EstDelivery, @Quantity)";
 
             command.Parameters.AddWithValue("@id", newKomponent.Id);
-            command.Parameters.AddWithValue("@Titel", newKomponent.Titel);
+            command.Parameters.AddWithValue("@Title", newKomponent.Title);
             command.Parameters.AddWithValue("@Specification ", newKomponent.Specification);
             command.Parameters.AddWithValue("@Price", newKomponent.Price);
-            command.Parameters.AddWithValue("@Bulk", newKomponent.Bulk);
             command.Parameters.AddWithValue("@Link", newKomponent.Link);
             command.Parameters.AddWithValue("@Note", newKomponent.Note);
             command.Parameters.AddWithValue("@EstDelivery", newKomponent.EstDelivery);
+            command.Parameters.AddWithValue("@Quantity", newKomponent.Quantity);
 
             command.ExecuteNonQuery(); //udfører SQL statement "command"
             conn.Close();
         }
 
         #endregion
-
+        
         #region DELETE method
         public void DeleteKompoent(int id)
         {

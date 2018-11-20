@@ -13,16 +13,16 @@ namespace StorageService
         public int Id { get; set; }
 
         [DataMember]
-        public string Titel { get; set; }
+        public string Title { get; set; }
 
         [DataMember]
         public string Specification { get; set; }
 
         [DataMember]
-        public double Price { get; set; }
+        public int Price { get; set; }
 
         [DataMember]
-        public int Bulk { get; set; }
+        public int Quantity { get; set; }
 
         [DataMember]
         public string Link { get; set; }
@@ -31,7 +31,7 @@ namespace StorageService
         public string Note { get; set; }
 
         [DataMember]
-        public double EstDelivery { get; set; }
+        public int EstDelivery { get; set; }
 
 
         public Komponenter()
@@ -41,7 +41,7 @@ namespace StorageService
 
         public override string ToString()
         {
-            return $"Id: {Id}, Titel: {Titel}, Specification: {Specification}, Price: {Price}, Bulk: {Bulk}, Link: {Link}, Note: {Note}, Estimated Delivery: {EstDelivery}";
+            return $"Id: {Id}, Title: {Title}, Specification: {Specification}, Price: {Price}, Link: {Link}, Note: {Note}, Estimated Delivery: {EstDelivery}, Quantity: {Quantity}";
         }
     }
 }

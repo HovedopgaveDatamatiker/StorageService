@@ -11,7 +11,7 @@
         {
         }
 
-        public virtual DbSet<Komponenter> Movies { get; set; }
+        public virtual DbSet<Komponenter> Components { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
