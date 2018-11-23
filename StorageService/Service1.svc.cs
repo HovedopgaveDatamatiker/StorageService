@@ -15,7 +15,7 @@ namespace StorageService
     public class Service1 : IService1
     {
         private Model1 komponentdb = new Model1();
-
+        //..
         #region Connection string
         //Data Source=natascha.database.windows.net;Initial Catalog=School;Integrated Security=False;User ID=nataschajakobsen;Password=********;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
         private static string connectingString =
