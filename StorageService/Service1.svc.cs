@@ -119,7 +119,11 @@ namespace StorageService
                         IsInProduction = reader.GetBoolean(3),
                         IsDone = reader.GetBoolean(4),
                     };
-                    liste.Add(reservation);
+
+                    if (reservation.IsInProduction == false && reservation.IsDone == false)
+                    {
+                        liste.Add(reservation);
+                    }
                 }
 
             }
