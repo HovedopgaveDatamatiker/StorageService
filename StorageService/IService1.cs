@@ -52,6 +52,15 @@ namespace StorageService
         ]
         List<Reservations> GetReservations();
 
+        //GET all in production
+        [OperationContract]
+        [WebInvoke(
+                Method = "GET",
+                ResponseFormat = WebMessageFormat.Json,
+                UriTemplate = "reservations")
+        ]
+        List<Reservations> GetAllInProduction();
+
 
     }
 }
