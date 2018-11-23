@@ -97,7 +97,6 @@ namespace StorageService
         }
         #endregion
 
-
         #region GET all reservations method
         public List<Reservations> GetReservations()
         {
@@ -131,5 +130,40 @@ namespace StorageService
         }
 
         #endregion
+
+        #region GET all in production method
+        public List<Reservations> GetAllInProduction()
+        {
+            List<Reservations> liste = new List<Reservations>(); //ny instans af en reservation
+            using (SqlConnection conn = new SqlConnection(connectingString))
+            {
+                conn.Open();
+                String sql = "SELECT * FROM Reservations";
+                SqlCommand command = new SqlCommand(sql, conn);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Reservations reservation = new Reservations
+                    {
+                        Id = reader.GetInt32(0),
+                        Product = reader.GetString(1),
+                        ScheduledDate = reader.GetDateTime(2),
+                        IsInProduction = reader.GetBoolean(3),
+                        IsDone = reader.GetBoolean(4),
+                    };
+
+                    if (reservation.IsInProduction == true && reservation.IsDone == false)
+                    {
+                        liste.Add(reservation);
+                    }
+                }
+
+            }
+            return liste;
+        }
+
+        #endregion
+
     }
 }
