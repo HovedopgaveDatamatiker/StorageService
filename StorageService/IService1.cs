@@ -57,7 +57,7 @@ namespace StorageService
         [WebInvoke(
                 Method = "GET",
                 ResponseFormat = WebMessageFormat.Json,
-                UriTemplate = "reservations")
+                UriTemplate = "production")
         ]
         List<Reservations> GetAllInProduction();
 
