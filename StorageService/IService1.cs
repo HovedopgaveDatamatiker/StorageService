@@ -13,6 +13,7 @@ namespace StorageService
     public interface IService1
     {
         //HTTP
+
         //GET all components
         [OperationContract]
         [WebInvoke(
@@ -33,13 +34,24 @@ namespace StorageService
         void AddKomponent(Komponenter newKomponent);
 
         //DELETE component
+        [OperationContract]
         [WebInvoke(
                 Method = "DELETE",
                 ResponseFormat = WebMessageFormat.Json,
                 UriTemplate = "komponenter?id={id}")
         ]
         void DeleteKompoent(int id);
-    }
 
-    
+
+        //GET all reservations
+        [OperationContract]
+        [WebInvoke(
+                Method = "GET",
+                ResponseFormat = WebMessageFormat.Json,
+                UriTemplate = "reservations")
+        ]
+        List<Reservations> GetReservations();
+
+
+    }
 }

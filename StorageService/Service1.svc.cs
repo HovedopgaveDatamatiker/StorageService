@@ -22,7 +22,7 @@ namespace StorageService
                "Server=tcp:natascha.database.windows.net,1433;Initial Catalog=School;Persist Security Info=False;User ID=nataschajakobsen;Password=Roskilde4000;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         #endregion
 
-        #region GET method
+        #region GET all components method
         public List<Komponenter> GetKomponenter()
         {
             List<Komponenter> liste = new List<Komponenter>(); //ny instans af komponent
@@ -54,7 +54,7 @@ namespace StorageService
         }
         #endregion
 
-        #region POST method
+        #region POST component method
         public void AddKomponent(Komponenter newKomponent)
         {
             SqlConnection conn = new SqlConnection(connectingString); //laver en ny instans af SqlConnection og kalder den conn.
@@ -81,7 +81,7 @@ namespace StorageService
 
         #endregion
         
-        #region DELETE method
+        #region DELETE component method
         public void DeleteKompoent(int id)
         {
             SqlConnection conn = new SqlConnection(connectingString);
@@ -98,5 +98,34 @@ namespace StorageService
         #endregion
 
 
+        #region GET all reservations method
+        public List<Reservations> GetReservations()
+        {
+            List<Reservations> liste = new List<Reservations>(); //ny instans af en reservation
+            using (SqlConnection conn = new SqlConnection(connectingString))
+            {
+                conn.Open();
+                String sql = "SELECT * FROM Reservations";
+                SqlCommand command = new SqlCommand(sql, conn);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Reservations reservation = new Reservations
+                    {
+                        Id = reader.GetInt32(0),
+                        Product = reader.GetString(1),
+                        ScheduledDate = reader.GetDateTime(2),
+                        IsInProduction = reader.GetBoolean(3),
+                        IsDone = reader.GetBoolean(4),
+                    };
+                    liste.Add(reservation);
+                }
+
+            }
+            return liste;
+        }
+
+        #endregion
     }
 }
