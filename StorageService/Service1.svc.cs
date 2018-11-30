@@ -155,6 +155,39 @@ namespace StorageService
         }
 
         #endregion
+        
+        #region PUT reservation method
+
+        public void PutToProduction(Reservation reservation, string id)
+        {
+            SqlConnection conn = new SqlConnection(connectingString); //laver en ny instans af SqlConnection og kalder den conn.
+            SqlCommand command = new SqlCommand(); //ny instans af SqlCommand og kalder den command
+
+            command.Connection = conn;
+            conn.Open(); //åbner forbindelsen 
+
+            //POST
+            //command.CommandText = @"INSERT INTO Components(Id, Product, ScheduledDate, IsInProduction, IsDone) 
+            //                    VALUES (@id, @Product, @ScheduledDate, @IsInProduction, @IsDone)";
+
+            command.CommandText = @"UPDATE Reservations 
+                                SET Product = @Product, 
+                                    ScheduledDate = @ScheduledDates,
+                                    IsInProduction = @IsInProduction,
+                                    IsDone = @IsDone
+                                WHERE Reservation.Id = @id";
+
+            command.Parameters.AddWithValue("@id", reservation.Id);
+            command.Parameters.AddWithValue("@Product", reservation.Product);
+            command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
+            command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
+            command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
+
+            command.ExecuteNonQuery(); //udfører SQL statement "command"
+            conn.Close();
+        }
+
+        #endregion
 
         #region GET all in production method
         public List<Reservation> GetAllInProduction()
@@ -186,39 +219,6 @@ namespace StorageService
 
             }
             return liste;
-        }
-
-        #endregion
-
-        #region PUT reservation method
-
-        public void PutToProduction(Reservation reservation, string id)
-        {
-            SqlConnection conn = new SqlConnection(connectingString); //laver en ny instans af SqlConnection og kalder den conn.
-            SqlCommand command = new SqlCommand(); //ny instans af SqlCommand og kalder den command
-
-            command.Connection = conn;
-            conn.Open(); //åbner forbindelsen 
-
-            //POST
-            //command.CommandText = @"INSERT INTO Components(Id, Product, ScheduledDate, IsInProduction, IsDone) 
-            //                    VALUES (@id, @Product, @ScheduledDate, @IsInProduction, @IsDone)";
-
-            command.CommandText = @"UPDATE Reservations 
-                                SET Product = @Product, 
-                                    ScheduledDate = @ScheduledDates,
-                                    IsInProduction = @IsInProduction,
-                                    IsDone = @IsDone
-                                WHERE Reservation.Id = @id";
-
-            command.Parameters.AddWithValue("@id", reservation.Id);
-            command.Parameters.AddWithValue("@Product", reservation.Product);
-            command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
-            command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
-            command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
-
-            command.ExecuteNonQuery(); //udfører SQL statement "command"
-            conn.Close();
         }
 
         #endregion
