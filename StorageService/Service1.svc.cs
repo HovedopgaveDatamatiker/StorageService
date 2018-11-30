@@ -189,6 +189,24 @@ namespace StorageService
 
         #endregion
 
+        #region DELETE reservation method
+
+        public void DeleteReservation(int id)
+        {
+            SqlConnection conn = new SqlConnection(connectingString);
+            SqlCommand cmd = new SqlCommand();
+
+            cmd.Connection = conn;
+            conn.Open();
+
+            cmd.CommandText = @"DELETE FROM Reservations WHERE Reservations.id = @id";
+            cmd.Parameters.AddWithValue("@id", id);
+            cmd.ExecuteNonQuery();
+            conn.Close();
+        }
+
+        #endregion
+
         #region GET all in production method
         public List<Reservation> GetAllInProduction()
         {

@@ -60,15 +60,6 @@ namespace StorageService
             UriTemplate = "reservations")]
         void AddReservation(Reservation reservation);
 
-        //GET all in production
-        [OperationContract]
-        [WebInvoke(
-                Method = "GET",
-                ResponseFormat = WebMessageFormat.Json,
-                UriTemplate = "production")
-        ]
-        List<Reservation> GetAllInProduction();
-
         //PUT to new in production
         [OperationContract]
         [WebInvoke(
@@ -77,6 +68,24 @@ namespace StorageService
             ResponseFormat = WebMessageFormat.Json,
             UriTemplate = "production")]
         void PutToProduction(Reservation reservation, string id);
+
+        //DELETE reservation
+        [OperationContract]
+        [WebInvoke(
+                Method = "DELETE",
+                ResponseFormat = WebMessageFormat.Json,
+                UriTemplate = "reservations?id={id}")
+        ]
+        void DeleteReservation(int id);
+
+        //GET all in production
+        [OperationContract]
+        [WebInvoke(
+                Method = "GET",
+                ResponseFormat = WebMessageFormat.Json,
+                UriTemplate = "production")
+        ]
+        List<Reservation> GetAllInProduction();
 
         //GET all done
         [OperationContract]

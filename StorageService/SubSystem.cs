@@ -17,7 +17,7 @@ namespace StorageService
         public string Product { get; set; }
 
         [DataMember]
-        public List<Komponenter> ComponentsList { get; set; }
+        public List<Component> ComponentsList { get; set; }
 
         [DataMember]
         public DateTime DateNeeded { get; set; }
