@@ -66,8 +66,8 @@ namespace StorageService
             Method = "PUT",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "production")]
-        void PutToProduction(Reservation reservation, string id);
+            UriTemplate = "reservation")]
+        void PutToProduction(Reservation reservation);
 
         //DELETE reservation
         [OperationContract]

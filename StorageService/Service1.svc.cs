@@ -142,42 +142,9 @@ namespace StorageService
             conn.Open(); //åbner forbindelsen 
 
             command.CommandText = @"INSERT INTO Components(Id, Product, ScheduledDate, IsInProduction, IsDone) 
-                                VALUES (@id, @Product, @ScheduledDate, @IsInProduction, @IsDone)";
+                                VALUES (@Id, @Product, @ScheduledDate, @IsInProduction, @IsDone)";
 
-            command.Parameters.AddWithValue("@id", reservation.Id);
-            command.Parameters.AddWithValue("@Product", reservation.Product);
-            command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
-            command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
-            command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
-
-            command.ExecuteNonQuery(); //udfører SQL statement "command"
-            conn.Close();
-        }
-
-        #endregion
-        
-        #region PUT reservation method
-
-        public void PutToProduction(Reservation reservation, string id)
-        {
-            SqlConnection conn = new SqlConnection(connectingString); //laver en ny instans af SqlConnection og kalder den conn.
-            SqlCommand command = new SqlCommand(); //ny instans af SqlCommand og kalder den command
-
-            command.Connection = conn;
-            conn.Open(); //åbner forbindelsen 
-
-            //POST
-            //command.CommandText = @"INSERT INTO Components(Id, Product, ScheduledDate, IsInProduction, IsDone) 
-            //                    VALUES (@id, @Product, @ScheduledDate, @IsInProduction, @IsDone)";
-
-            command.CommandText = @"UPDATE Reservations 
-                                SET Product = @Product, 
-                                    ScheduledDate = @ScheduledDates,
-                                    IsInProduction = @IsInProduction,
-                                    IsDone = @IsDone
-                                WHERE Reservation.Id = @id";
-
-            command.Parameters.AddWithValue("@id", reservation.Id);
+            command.Parameters.AddWithValue("@Id", reservation.Id);
             command.Parameters.AddWithValue("@Product", reservation.Product);
             command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
             command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
@@ -191,7 +158,7 @@ namespace StorageService
 
         #region DELETE reservation method
 
-        public void DeleteReservation(int id)
+        public void DeleteReservation(int Id)
         {
             SqlConnection conn = new SqlConnection(connectingString);
             SqlCommand cmd = new SqlCommand();
@@ -199,8 +166,8 @@ namespace StorageService
             cmd.Connection = conn;
             conn.Open();
 
-            cmd.CommandText = @"DELETE FROM Reservations WHERE Reservations.id = @id";
-            cmd.Parameters.AddWithValue("@id", id);
+            cmd.CommandText = @"DELETE FROM Reservations WHERE Reservations.Id = @Id";
+            cmd.Parameters.AddWithValue("@Id", Id);
             cmd.ExecuteNonQuery();
             conn.Close();
         }
@@ -275,5 +242,24 @@ namespace StorageService
 
         #endregion
 
+        #region Put
+        public void PutToProduction(Reservation reservation)
+        {
+            using (SqlConnection conn = new SqlConnection(connectingString))
+            {
+                conn.Open();
+                String sql = @"UPDATE Reservations SET Product = @Product, ScheduledDate = @ScheduledDate, IsInProduction = @IsInProductionIsDone = @IsDone WHERE Reservations.Id = @Id";
+                SqlCommand command = new SqlCommand(sql, conn);
+                command.Parameters.AddWithValue("@Id", reservation.Id);
+                command.Parameters.AddWithValue("@Product", reservation.Product);
+                command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
+                command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
+                command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
+
+                command.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+        #endregion
     }
 }
