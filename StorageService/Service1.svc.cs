@@ -23,9 +23,9 @@ namespace StorageService
         #endregion
 
         #region GET all components method
-        public List<Komponenter> GetKomponenter()
+        public List<Component> GetComponents()
         {
-            List<Komponenter> liste = new List<Komponenter>(); //ny instans af komponent
+            List<Component> liste = new List<Component>(); //ny instans af komponent
             using (SqlConnection conn = new SqlConnection(connectingString))
             {
                 conn.Open();
@@ -35,7 +35,7 @@ namespace StorageService
 
                 while (reader.Read())
                 {
-                    Komponenter komponent = new Komponenter
+                    Component komponent = new Component
                     {
                         Id = reader.GetInt32(0),
                         Title = reader.GetString(1),
@@ -55,7 +55,7 @@ namespace StorageService
         #endregion
 
         #region POST component method
-        public void AddKomponent(Komponenter newKomponent)
+        public void AddComponent(Component newKomponent)
         {
             SqlConnection conn = new SqlConnection(connectingString); //laver en ny instans af SqlConnection og kalder den conn.
             SqlCommand command = new SqlCommand(); //ny instans af SqlCommand og kalder den command
@@ -82,7 +82,7 @@ namespace StorageService
         #endregion
         
         #region DELETE component method
-        public void DeleteKompoent(int id)
+        public void DeleteComponent(int id)
         {
             SqlConnection conn = new SqlConnection(connectingString);
             SqlCommand cmd = new SqlCommand();
@@ -98,9 +98,9 @@ namespace StorageService
         #endregion
 
         #region GET all reservations method
-        public List<Reservations> GetReservations()
+        public List<Reservation> GetReservations()
         {
-            List<Reservations> liste = new List<Reservations>(); //ny instans af en reservation
+            List<Reservation> liste = new List<Reservation>(); //ny instans af en reservation
             using (SqlConnection conn = new SqlConnection(connectingString))
             {
                 conn.Open();
@@ -110,7 +110,7 @@ namespace StorageService
 
                 while (reader.Read())
                 {
-                    Reservations reservation = new Reservations
+                    Reservation reservation = new Reservation
                     {
                         Id = reader.GetInt32(0),
                         Product = reader.GetString(1),
@@ -131,10 +131,35 @@ namespace StorageService
 
         #endregion
 
-        #region GET all in production method
-        public List<Reservations> GetAllInProduction()
+        #region POST new reservation method
+
+        public void AddReservation(Reservation reservation)
         {
-            List<Reservations> liste = new List<Reservations>(); //ny instans af en reservation
+            SqlConnection conn = new SqlConnection(connectingString); //laver en ny instans af SqlConnection og kalder den conn.
+            SqlCommand command = new SqlCommand(); //ny instans af SqlCommand og kalder den command
+
+            command.Connection = conn;
+            conn.Open(); //åbner forbindelsen 
+
+            command.CommandText = @"INSERT INTO Components(Id, Product, ScheduledDate, IsInProduction, IsDone) 
+                                VALUES (@id, @Product, @ScheduledDate, @IsInProduction, @IsDone)";
+
+            command.Parameters.AddWithValue("@id", reservation.Id);
+            command.Parameters.AddWithValue("@Product", reservation.Product);
+            command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
+            command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
+            command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
+
+            command.ExecuteNonQuery(); //udfører SQL statement "command"
+            conn.Close();
+        }
+
+        #endregion
+
+        #region GET all in production method
+        public List<Reservation> GetAllInProduction()
+        {
+            List<Reservation> liste = new List<Reservation>(); //ny instans af en reservation
             using (SqlConnection conn = new SqlConnection(connectingString))
             {
                 conn.Open();
@@ -144,7 +169,7 @@ namespace StorageService
 
                 while (reader.Read())
                 {
-                    Reservations reservation = new Reservations
+                    Reservation reservation = new Reservation
                     {
                         Id = reader.GetInt32(0),
                         Product = reader.GetString(1),
@@ -154,6 +179,73 @@ namespace StorageService
                     };
 
                     if (reservation.IsInProduction == true && reservation.IsDone == false)
+                    {
+                        liste.Add(reservation);
+                    }
+                }
+
+            }
+            return liste;
+        }
+
+        #endregion
+
+        #region PUT reservation method
+
+        public void PutToProduction(Reservation reservation, string id)
+        {
+            SqlConnection conn = new SqlConnection(connectingString); //laver en ny instans af SqlConnection og kalder den conn.
+            SqlCommand command = new SqlCommand(); //ny instans af SqlCommand og kalder den command
+
+            command.Connection = conn;
+            conn.Open(); //åbner forbindelsen 
+
+            //POST
+            //command.CommandText = @"INSERT INTO Components(Id, Product, ScheduledDate, IsInProduction, IsDone) 
+            //                    VALUES (@id, @Product, @ScheduledDate, @IsInProduction, @IsDone)";
+
+            command.CommandText = @"UPDATE Reservations 
+                                SET Product = @Product, 
+                                    ScheduledDate = @ScheduledDates,
+                                    IsInProduction = @IsInProduction,
+                                    IsDone = @IsDone
+                                WHERE Reservation.Id = @id";
+
+            command.Parameters.AddWithValue("@id", reservation.Id);
+            command.Parameters.AddWithValue("@Product", reservation.Product);
+            command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
+            command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
+            command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
+
+            command.ExecuteNonQuery(); //udfører SQL statement "command"
+            conn.Close();
+        }
+
+        #endregion
+
+        #region GET all done method
+        public List<Reservation> GetAllDone()
+        {
+            List<Reservation> liste = new List<Reservation>(); //ny instans af en reservation
+            using (SqlConnection conn = new SqlConnection(connectingString))
+            {
+                conn.Open();
+                String sql = "SELECT * FROM Reservations";
+                SqlCommand command = new SqlCommand(sql, conn);
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Reservation reservation = new Reservation
+                    {
+                        Id = reader.GetInt32(0),
+                        Product = reader.GetString(1),
+                        ScheduledDate = reader.GetDateTime(2),
+                        IsInProduction = reader.GetBoolean(3),
+                        IsDone = reader.GetBoolean(4),
+                    };
+
+                    if (reservation.IsDone == true)
                     {
                         liste.Add(reservation);
                     }

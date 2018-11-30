@@ -72,12 +72,14 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Service1.svc" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Komponenter.cs" />
+    <Compile Include="Component.cs" />
     <Compile Include="Model1.cs" />
-    <Compile Include="Reservations.cs" />
+    <Compile Include="Reservation.cs" />
     <Compile Include="Service1.svc.cs">
       <DependentUpon>Service1.svc</DependentUpon>
     </Compile>

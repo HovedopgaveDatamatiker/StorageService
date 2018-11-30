@@ -11,11 +11,11 @@
         {
         }
 
-        public virtual DbSet<Komponenter> Components { get; set; }
+        public virtual DbSet<Component> Components { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Komponenter>()
+            modelBuilder.Entity<Component>()
                 .Property(e => e.Id);
         }
     }

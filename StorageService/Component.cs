@@ -7,7 +7,7 @@ using System.Web;
 namespace StorageService
 {
     [DataContract]
-    public class Komponenter
+    public class Component
     {
         [DataMember]
         public int Id { get; set; }
@@ -34,7 +34,7 @@ namespace StorageService
         public int EstDelivery { get; set; }
 
 
-        public Komponenter()
+        public Component()
         {
 
         }

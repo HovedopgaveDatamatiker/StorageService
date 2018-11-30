@@ -21,7 +21,7 @@ namespace StorageService
                 ResponseFormat = WebMessageFormat.Json,
                 UriTemplate = "komponenter")
         ]
-        List<Komponenter> GetKomponenter();
+        List<Component> GetComponents();
 
         //POST component
         [OperationContract]
@@ -31,7 +31,7 @@ namespace StorageService
                 //ResponseFormat = WebMessageFormat.Json,
                 UriTemplate = "komponenter")
         ]
-        void AddKomponent(Komponenter newKomponent);
+        void AddComponent(Component newKomponent);
 
         //DELETE component
         [OperationContract]
@@ -40,7 +40,7 @@ namespace StorageService
                 ResponseFormat = WebMessageFormat.Json,
                 UriTemplate = "komponenter?id={id}")
         ]
-        void DeleteKompoent(int id);
+        void DeleteComponent(int id);
 
 
         //GET all reservations
@@ -50,7 +50,15 @@ namespace StorageService
                 ResponseFormat = WebMessageFormat.Json,
                 UriTemplate = "reservations")
         ]
-        List<Reservations> GetReservations();
+        List<Reservation> GetReservations();
+
+        //POST new reservation
+        [OperationContract]
+        [WebInvoke(
+            Method = "POST",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "reservations")]
+        void AddReservation(Reservation reservation);
 
         //GET all in production
         [OperationContract]
@@ -59,8 +67,24 @@ namespace StorageService
                 ResponseFormat = WebMessageFormat.Json,
                 UriTemplate = "production")
         ]
-        List<Reservations> GetAllInProduction();
+        List<Reservation> GetAllInProduction();
 
+        //PUT to new in production
+        [OperationContract]
+        [WebInvoke(
+            Method = "PUT",
+            RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "production")]
+        void PutToProduction(Reservation reservation, string id);
+
+        //GET all done
+        [OperationContract]
+        [WebInvoke(
+            Method = "GET",
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "done")]
+        List<Reservation> GetAllDone();
 
     }
 }

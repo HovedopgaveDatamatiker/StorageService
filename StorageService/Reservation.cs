@@ -6,7 +6,7 @@ using System.Web;
 
 namespace StorageService
 {
-    public class Reservations
+    public class Reservation
     {
         public int Id { get; set; }
 
@@ -18,7 +18,7 @@ namespace StorageService
 
         public bool IsDone { get; set; }
 
-        public Reservations()
+        public Reservation()
         {
 
         }
