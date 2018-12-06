@@ -22,6 +22,8 @@ namespace StorageService
                "Server=tcp:natascha.database.windows.net,1433;Initial Catalog=School;Persist Security Info=False;User ID=nataschajakobsen;Password=Roskilde4000;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         #endregion
 
+        //Components
+
         #region GET all components method
         public List<Component> GetComponents()
         {
@@ -80,7 +82,30 @@ namespace StorageService
         }
 
         #endregion
-        
+
+        #region PUT component
+        public void UpdateComponent(Component component)
+        {
+            using (SqlConnection conn = new SqlConnection(connectingString))
+            {
+                conn.Open();
+                String sql = @"UPDATE Components SET Id = @id, Title = @Title, Specification = @Specification, Price = @Price, Link = @Link, Note = @Note, EstDelivery = @EstDelivery, Quantity = @Quantity WHERE Components.Id = @id";
+                SqlCommand command = new SqlCommand(sql, conn);
+                command.Parameters.AddWithValue("@id", component.Id);
+                command.Parameters.AddWithValue("@Title", component.Title);
+                command.Parameters.AddWithValue("@Specification ", component.Specification);
+                command.Parameters.AddWithValue("@Price", component.Price);
+                command.Parameters.AddWithValue("@Link", component.Link);
+                command.Parameters.AddWithValue("@Note", component.Note);
+                command.Parameters.AddWithValue("@EstDelivery", component.EstDelivery);
+                command.Parameters.AddWithValue("@Quantity", component.Quantity);
+
+                command.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+        #endregion
+
         #region DELETE component method
         public void DeleteComponent(int id)
         {
@@ -96,6 +121,9 @@ namespace StorageService
             conn.Close();
         }
         #endregion
+
+
+        //Reservations
 
         #region GET all reservations method
         public List<Reservation> GetReservations()
@@ -141,7 +169,7 @@ namespace StorageService
             command.Connection = conn;
             conn.Open(); //åbner forbindelsen 
 
-            command.CommandText = @"INSERT INTO Components(Id, Product, ScheduledDate, IsInProduction, IsDone) 
+            command.CommandText = @"INSERT INTO Reservations(Id, Product, ScheduledDate, IsInProduction, IsDone) 
                                 VALUES (@Id, @Product, @ScheduledDate, @IsInProduction, @IsDone)";
 
             command.Parameters.AddWithValue("@Id", reservation.Id);
@@ -154,6 +182,26 @@ namespace StorageService
             conn.Close();
         }
 
+        #endregion
+
+        #region PUT reservation
+        public void UpdateReservation(Reservation reservation)
+        {
+            using (SqlConnection conn = new SqlConnection(connectingString))
+            {
+                conn.Open();
+                String sql = @"UPDATE Reservations SET Product = @Product, ScheduledDate = @ScheduledDate, IsInProduction = @IsInProduction, IsDone = @IsDone WHERE Reservations.Id = @Id";
+                SqlCommand command = new SqlCommand(sql, conn);
+                command.Parameters.AddWithValue("@Id", reservation.Id);
+                command.Parameters.AddWithValue("@Product", reservation.Product);
+                command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
+                command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
+                command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
+
+                command.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
         #endregion
 
         #region DELETE reservation method
@@ -173,6 +221,9 @@ namespace StorageService
         }
 
         #endregion
+
+
+        //Production
 
         #region GET all in production method
         public List<Reservation> GetAllInProduction()
@@ -208,6 +259,9 @@ namespace StorageService
 
         #endregion
 
+
+        //Done
+
         #region GET all done method
         public List<Reservation> GetAllDone()
         {
@@ -242,24 +296,5 @@ namespace StorageService
 
         #endregion
 
-        #region Put
-        public void PutToProduction(Reservation reservation)
-        {
-            using (SqlConnection conn = new SqlConnection(connectingString))
-            {
-                conn.Open();
-                String sql = @"UPDATE Reservations SET Product = @Product, ScheduledDate = @ScheduledDate, IsInProduction = @IsInProductionIsDone = @IsDone WHERE Reservations.Id = @Id";
-                SqlCommand command = new SqlCommand(sql, conn);
-                command.Parameters.AddWithValue("@Id", reservation.Id);
-                command.Parameters.AddWithValue("@Product", reservation.Product);
-                command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
-                command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
-                command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
-
-                command.ExecuteNonQuery();
-                conn.Close();
-            }
-        }
-        #endregion
     }
 }

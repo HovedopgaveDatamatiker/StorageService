@@ -28,10 +28,19 @@ namespace StorageService
         [WebInvoke(
                 Method = "POST",
                 RequestFormat = WebMessageFormat.Json,
-                //ResponseFormat = WebMessageFormat.Json,
                 UriTemplate = "komponenter")
         ]
         void AddComponent(Component newKomponent);
+
+        //PUT component
+        [OperationContract]
+        [WebInvoke(
+            Method = "PUT",
+            RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "komponenter")
+        ]
+        void UpdateComponent(Component component);
 
         //DELETE component
         [OperationContract]
@@ -57,17 +66,19 @@ namespace StorageService
         [WebInvoke(
             Method = "POST",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "reservations")]
+            UriTemplate = "reservations")
+        ]
         void AddReservation(Reservation reservation);
 
-        //PUT to new in production
+        //PUT resevervation
         [OperationContract]
         [WebInvoke(
             Method = "PUT",
             RequestFormat = WebMessageFormat.Json,
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "reservation")]
-        void PutToProduction(Reservation reservation);
+            UriTemplate = "reservation")
+        ]
+        void UpdateReservation(Reservation reservation);
 
         //DELETE reservation
         [OperationContract]
@@ -92,7 +103,8 @@ namespace StorageService
         [WebInvoke(
             Method = "GET",
             ResponseFormat = WebMessageFormat.Json,
-            UriTemplate = "done")]
+            UriTemplate = "done")
+        ]
         List<Reservation> GetAllDone();
 
     }
