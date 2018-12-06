@@ -167,7 +167,7 @@ namespace StorageService
             SqlCommand command = new SqlCommand(); //ny instans af SqlCommand og kalder den command
 
             command.Connection = conn;
-            conn.Open(); //åbner forbindelsen 
+            conn.Open(); //ååbner forbindelsen 
 
             command.CommandText = @"INSERT INTO Reservations(Id, Product, ScheduledDate, IsInProduction, IsDone) 
                                 VALUES (@Id, @Product, @ScheduledDate, @IsInProduction, @IsDone)";
