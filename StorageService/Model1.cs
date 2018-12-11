@@ -12,10 +12,13 @@
         }
 
         public virtual DbSet<Component> Components { get; set; }
+        public virtual DbSet<Reservation> Reservations { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Component>()
+                .Property(e => e.Id);
+            modelBuilder.Entity<Reservation>()
                 .Property(e => e.Id);
         }
     }

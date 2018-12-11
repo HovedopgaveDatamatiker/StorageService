@@ -6,18 +6,20 @@ using System.Web;
 
 namespace StorageService
 {
+    [DataContract]
     public class Reservation
     {
+        [DataMember]
         public int Id { get; set; }
-
+        [DataMember]
         public string Product { get; set; }
-
-        public DateTime ScheduledDate { get; set; }
-
+        //[DataMember]
+        //public  ScheduledDate { get; set; }
+        [DataMember]
         public bool IsInProduction { get; set; }
-
+        [DataMember]
         public bool IsDone { get; set; }
-
+        
         public Reservation()
         {
 
@@ -25,7 +27,7 @@ namespace StorageService
 
         public override string ToString()
         {
-            return $"Id: {Id}, Product: {Product}, Scheduled Date Needed: {ScheduledDate}, In Production: {IsInProduction}, Done: {IsDone}";
+            return $"Id: {Id}, Product: {Product}, IsDone: {IsDone}, IsInProduction: {IsInProduction}";
         }
 
     }

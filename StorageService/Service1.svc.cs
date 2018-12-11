@@ -132,7 +132,7 @@ namespace StorageService
             using (SqlConnection conn = new SqlConnection(connectingString))
             {
                 conn.Open();
-                String sql = "SELECT * FROM Reservations";
+                String sql = "SELECT * FROM Reservations WHERE IsInProduction = 0 AND IsDone = 0";
                 SqlCommand command = new SqlCommand(sql, conn);
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -142,22 +142,18 @@ namespace StorageService
                     {
                         Id = reader.GetInt32(0),
                         Product = reader.GetString(1),
-                        ScheduledDate = reader.GetDateTime(2),
-                        IsInProduction = reader.GetBoolean(3),
-                        IsDone = reader.GetBoolean(4),
+                        //ScheduledDate = reader.GetDateTime(2),
+                        IsInProduction = reader.GetBoolean(2),
+                        IsDone = reader.GetBoolean(3),
                     };
-
-                    if (reservation.IsInProduction == false && reservation.IsDone == false)
-                    {
-                        liste.Add(reservation);
-                    }
+                    liste.Add(reservation);
                 }
-
             }
             return liste;
         }
 
         #endregion
+
 
         #region POST new reservation method
 
@@ -167,14 +163,14 @@ namespace StorageService
             SqlCommand command = new SqlCommand(); //ny instans af SqlCommand og kalder den command
 
             command.Connection = conn;
-            conn.Open(); //ååbner forbindelsen 
+            conn.Open(); //åbner forbindelsen 
 
-            command.CommandText = @"INSERT INTO Reservations(Id, Product, ScheduledDate, IsInProduction, IsDone) 
-                                VALUES (@Id, @Product, @ScheduledDate, @IsInProduction, @IsDone)";
+            command.CommandText = @"INSERT INTO Reservations(Id, Product, IsInProduction, IsDone) 
+                                VALUES (@Id, @Product, @IsInProduction, @IsDone)";
 
             command.Parameters.AddWithValue("@Id", reservation.Id);
             command.Parameters.AddWithValue("@Product", reservation.Product);
-            command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
+            //command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
             command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
             command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
 
@@ -184,19 +180,37 @@ namespace StorageService
 
         #endregion
 
+
         #region PUT reservation
         public void UpdateReservation(Reservation reservation)
         {
             using (SqlConnection conn = new SqlConnection(connectingString))
             {
                 conn.Open();
-                String sql = @"UPDATE Reservations SET Product = @Product, ScheduledDate = @ScheduledDate, IsInProduction = @IsInProduction, IsDone = @IsDone WHERE Reservations.Id = @Id";
+                String sql = @"UPDATE Reservations SET Product = @Product, IsInProduction = @IsInProduction, IsDone = @IsDone WHERE Reservations.Id = @Id";
                 SqlCommand command = new SqlCommand(sql, conn);
                 command.Parameters.AddWithValue("@Id", reservation.Id);
                 command.Parameters.AddWithValue("@Product", reservation.Product);
-                command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
+                //command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
                 command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
                 command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
+
+                command.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
+        #endregion
+
+        #region PUT reservation to production
+        public void MoveToProduction(Reservation reservation)
+        {
+            using (SqlConnection conn = new SqlConnection(connectingString))
+            {
+                conn.Open();
+                String sql = @"UPDATE Reservations SET IsInProduction = @IsInProduction WHERE Reservations.Id = @Id";
+                SqlCommand command = new SqlCommand(sql, conn);
+                command.Parameters.AddWithValue("@Id", reservation.Id);
+                command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
 
                 command.ExecuteNonQuery();
                 conn.Close();
@@ -242,9 +256,9 @@ namespace StorageService
                     {
                         Id = reader.GetInt32(0),
                         Product = reader.GetString(1),
-                        ScheduledDate = reader.GetDateTime(2),
-                        IsInProduction = reader.GetBoolean(3),
-                        IsDone = reader.GetBoolean(4),
+                        //ScheduledDate = reader.GetDateTime(2),
+                        IsInProduction = reader.GetBoolean(2),
+                        IsDone = reader.GetBoolean(3),
                     };
 
                     if (reservation.IsInProduction == true && reservation.IsDone == false)
@@ -257,6 +271,23 @@ namespace StorageService
             return liste;
         }
 
+        #endregion
+
+        #region PUT production to done
+        //public void MoveToDone(Reservation reservation)
+        //{
+        //    using (SqlConnection conn = new SqlConnection(connectingString))
+        //    {
+        //        conn.Open();
+        //        String sql = @"UPDATE Reservations SET IsInProduction = @IsInProduction WHERE Reservations.Id = @Id";
+        //        SqlCommand command = new SqlCommand(sql, conn);
+        //        command.Parameters.AddWithValue("@Id", reservation.Id);
+        //        command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
+
+        //        command.ExecuteNonQuery();
+        //        conn.Close();
+        //    }
+        //}
         #endregion
 
 
@@ -279,9 +310,9 @@ namespace StorageService
                     {
                         Id = reader.GetInt32(0),
                         Product = reader.GetString(1),
-                        ScheduledDate = reader.GetDateTime(2),
-                        IsInProduction = reader.GetBoolean(3),
-                        IsDone = reader.GetBoolean(4),
+                        //ScheduledDate = reader.GetDateTime(2),
+                        IsInProduction = reader.GetBoolean(2),
+                        IsDone = reader.GetBoolean(3),
                     };
 
                     if (reservation.IsDone == true)

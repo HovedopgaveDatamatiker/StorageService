@@ -80,6 +80,16 @@ namespace StorageService
         ]
         void UpdateReservation(Reservation reservation);
 
+        //PUT resevervation
+        [OperationContract]
+        [WebInvoke(
+            Method = "PUT",
+            RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "reservationtoproduction")
+        ]
+        void MoveToProduction(Reservation reservation);
+
         //DELETE reservation
         [OperationContract]
         [WebInvoke(
@@ -98,6 +108,16 @@ namespace StorageService
         ]
         List<Reservation> GetAllInProduction();
 
+        ////PUT production to done
+        //[OperationContract]
+        //[WebInvoke(
+        //    Method = "PUT",
+        //    RequestFormat = WebMessageFormat.Json,
+        //    ResponseFormat = WebMessageFormat.Json,
+        //    UriTemplate = "production")
+        //]
+        //void MoveToDone(Reservation reservation);
+
         //GET all done
         [OperationContract]
         [WebInvoke(
@@ -106,6 +126,7 @@ namespace StorageService
             UriTemplate = "done")
         ]
         List<Reservation> GetAllDone();
+
 
     }
 }
