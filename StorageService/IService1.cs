@@ -108,15 +108,15 @@ namespace StorageService
         ]
         List<Reservation> GetAllInProduction();
 
-        ////PUT production to done
-        //[OperationContract]
-        //[WebInvoke(
-        //    Method = "PUT",
-        //    RequestFormat = WebMessageFormat.Json,
-        //    ResponseFormat = WebMessageFormat.Json,
-        //    UriTemplate = "production")
-        //]
-        //void MoveToDone(Reservation reservation);
+        //PUT production to done
+        [OperationContract]
+        [WebInvoke(
+            Method = "PUT",
+            RequestFormat = WebMessageFormat.Json,
+            ResponseFormat = WebMessageFormat.Json,
+            UriTemplate = "productiontodone")
+        ]
+        void MoveToDone(Reservation reservation);
 
         //GET all done
         [OperationContract]

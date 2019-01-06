@@ -14,12 +14,13 @@ namespace StorageService
     // NOTE: In order to launch WCF Test Client for testing this service, please select Service1.svc or Service1.svc.cs at the Solution Explorer and start debugging.
     public class Service1 : IService1
     {
-        private Model1 komponentdb = new Model1();
+       
         //..
         #region Connection string
-        //Data Source=natascha.database.windows.net;Initial Catalog=School;Integrated Security=False;User ID=nataschajakobsen;Password=********;Connect Timeout=30;Encrypt=True;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False
+        
         private static string connectingString =
-               "Server=tcp:natascha.database.windows.net,1433;Initial Catalog=School;Persist Security Info=False;User ID=nataschajakobsen;Password=Roskilde4000;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+               "Server=tcp:natascha.database.windows.net,1433;Initial Catalog=School;Persist Security Info=False;User ID=nataschajakobsen;Password=Roskilde4000;" +
+               "MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
         #endregion
 
         //Components
@@ -46,8 +47,10 @@ namespace StorageService
                         Link = reader.GetString(4),
                         Note = reader.GetString(5),
                         EstDelivery = reader.GetInt32(6),
-                        Quantity = reader.GetInt32(7)
-                    };
+                        Quantity = reader.GetInt32(7),
+                        Available = reader.GetInt32(8)
+
+                };
                     liste.Add(komponent);
                 }
 
@@ -65,8 +68,8 @@ namespace StorageService
             command.Connection = conn;
             conn.Open(); //åbner forbindelsen 
 
-            command.CommandText = @"INSERT INTO Components(Id, Title, Specification, Price, Link, Note, EstDelivery, Quantity) 
-                                VALUES (@id, @Title, @Specification, @Price, @Link, @Note, @EstDelivery, @Quantity)";
+            command.CommandText = @"INSERT INTO Components(Id, Title, Specification, Price, Link, Note, EstDelivery, Quantity, Available) 
+                                VALUES (@id, @Title, @Specification, @Price, @Link, @Note, @EstDelivery, @Quantity, @Available)";
 
             command.Parameters.AddWithValue("@id", newKomponent.Id);
             command.Parameters.AddWithValue("@Title", newKomponent.Title);
@@ -76,6 +79,7 @@ namespace StorageService
             command.Parameters.AddWithValue("@Note", newKomponent.Note);
             command.Parameters.AddWithValue("@EstDelivery", newKomponent.EstDelivery);
             command.Parameters.AddWithValue("@Quantity", newKomponent.Quantity);
+            command.Parameters.AddWithValue("@Available", newKomponent.Available);
 
             command.ExecuteNonQuery(); //udfører SQL statement "command"
             conn.Close();
@@ -89,7 +93,7 @@ namespace StorageService
             using (SqlConnection conn = new SqlConnection(connectingString))
             {
                 conn.Open();
-                String sql = @"UPDATE Components SET Id = @id, Title = @Title, Specification = @Specification, Price = @Price, Link = @Link, Note = @Note, EstDelivery = @EstDelivery, Quantity = @Quantity WHERE Components.Id = @id";
+                String sql = @"UPDATE Components SET Id = @id, Title = @Title, Specification = @Specification, Price = @Price, Link = @Link, Note = @Note, EstDelivery = @EstDelivery, Quantity = @Quantity, Available = @Available WHERE Components.Id = @id";
                 SqlCommand command = new SqlCommand(sql, conn);
                 command.Parameters.AddWithValue("@id", component.Id);
                 command.Parameters.AddWithValue("@Title", component.Title);
@@ -99,6 +103,7 @@ namespace StorageService
                 command.Parameters.AddWithValue("@Note", component.Note);
                 command.Parameters.AddWithValue("@EstDelivery", component.EstDelivery);
                 command.Parameters.AddWithValue("@Quantity", component.Quantity);
+                command.Parameters.AddWithValue("@Available", component.Available);
 
                 command.ExecuteNonQuery();
                 conn.Close();
@@ -142,9 +147,9 @@ namespace StorageService
                     {
                         Id = reader.GetInt32(0),
                         Product = reader.GetString(1),
-                        //ScheduledDate = reader.GetDateTime(2),
                         IsInProduction = reader.GetBoolean(2),
                         IsDone = reader.GetBoolean(3),
+                        ScheduledDate = reader.GetString(4)
                     };
                     liste.Add(reservation);
                 }
@@ -165,14 +170,14 @@ namespace StorageService
             command.Connection = conn;
             conn.Open(); //åbner forbindelsen 
 
-            command.CommandText = @"INSERT INTO Reservations(Id, Product, IsInProduction, IsDone) 
-                                VALUES (@Id, @Product, @IsInProduction, @IsDone)";
+            command.CommandText = @"INSERT INTO Reservations(Id, Product, IsInProduction, IsDone, ScheduledDate) 
+                                VALUES (@Id, @Product, @IsInProduction, @IsDone, @ScheduledDate)";
 
             command.Parameters.AddWithValue("@Id", reservation.Id);
             command.Parameters.AddWithValue("@Product", reservation.Product);
-            //command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
             command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
             command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
+            command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
 
             command.ExecuteNonQuery(); //udfører SQL statement "command"
             conn.Close();
@@ -180,20 +185,19 @@ namespace StorageService
 
         #endregion
 
-
         #region PUT reservation
         public void UpdateReservation(Reservation reservation)
         {
             using (SqlConnection conn = new SqlConnection(connectingString))
             {
                 conn.Open();
-                String sql = @"UPDATE Reservations SET Product = @Product, IsInProduction = @IsInProduction, IsDone = @IsDone WHERE Reservations.Id = @Id";
+                String sql = @"UPDATE Reservations SET Product = @Product, IsInProduction = @IsInProduction, IsDone = @IsDone, ScheduledDate = @ScheduledDate WHERE Reservations.Id = @Id";
                 SqlCommand command = new SqlCommand(sql, conn);
                 command.Parameters.AddWithValue("@Id", reservation.Id);
                 command.Parameters.AddWithValue("@Product", reservation.Product);
-                //command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
                 command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
                 command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
+                command.Parameters.AddWithValue("@ScheduledDate", reservation.ScheduledDate);
 
                 command.ExecuteNonQuery();
                 conn.Close();
@@ -256,9 +260,9 @@ namespace StorageService
                     {
                         Id = reader.GetInt32(0),
                         Product = reader.GetString(1),
-                        //ScheduledDate = reader.GetDateTime(2),
                         IsInProduction = reader.GetBoolean(2),
                         IsDone = reader.GetBoolean(3),
+                        ScheduledDate = reader.GetString(4)
                     };
 
                     if (reservation.IsInProduction == true && reservation.IsDone == false)
@@ -274,20 +278,21 @@ namespace StorageService
         #endregion
 
         #region PUT production to done
-        //public void MoveToDone(Reservation reservation)
-        //{
-        //    using (SqlConnection conn = new SqlConnection(connectingString))
-        //    {
-        //        conn.Open();
-        //        String sql = @"UPDATE Reservations SET IsInProduction = @IsInProduction WHERE Reservations.Id = @Id";
-        //        SqlCommand command = new SqlCommand(sql, conn);
-        //        command.Parameters.AddWithValue("@Id", reservation.Id);
-        //        command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
+        public void MoveToDone(Reservation reservation)
+        {
+            using (SqlConnection conn = new SqlConnection(connectingString))
+            {
+                conn.Open();
+                String sql = @"UPDATE Reservations SET IsDone = @IsDone, IsInProduction = @IsInProduction WHERE Reservations.Id = @Id";
+                SqlCommand command = new SqlCommand(sql, conn);
+                command.Parameters.AddWithValue("@Id", reservation.Id);
+                command.Parameters.AddWithValue("@IsInProduction", reservation.IsInProduction);
+                command.Parameters.AddWithValue("@IsDone", reservation.IsDone);
 
-        //        command.ExecuteNonQuery();
-        //        conn.Close();
-        //    }
-        //}
+                command.ExecuteNonQuery();
+                conn.Close();
+            }
+        }
         #endregion
 
 
@@ -310,9 +315,9 @@ namespace StorageService
                     {
                         Id = reader.GetInt32(0),
                         Product = reader.GetString(1),
-                        //ScheduledDate = reader.GetDateTime(2),
                         IsInProduction = reader.GetBoolean(2),
                         IsDone = reader.GetBoolean(3),
+                        ScheduledDate = reader.GetString(4)
                     };
 
                     if (reservation.IsDone == true)

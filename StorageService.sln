@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27428.2011
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageService", "StorageService\StorageService.csproj", "{5F235018-FAF4-45F4-829D-304DC92D9283}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageServiceTest", "StorageServiceTest\StorageServiceTest.csproj", "{EB83D16E-0850-4A5F-A543-9C510A725147}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{5F235018-FAF4-45F4-829D-304DC92D9283}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5F235018-FAF4-45F4-829D-304DC92D9283}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5F235018-FAF4-45F4-829D-304DC92D9283}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB83D16E-0850-4A5F-A543-9C510A725147}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB83D16E-0850-4A5F-A543-9C510A725147}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB83D16E-0850-4A5F-A543-9C510A725147}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB83D16E-0850-4A5F-A543-9C510A725147}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

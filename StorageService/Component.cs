@@ -33,6 +33,9 @@ namespace StorageService
         [DataMember]
         public int EstDelivery { get; set; }
 
+        [DataMember]
+        public int Available { get; set; }
+
 
         public Component()
         {
@@ -41,7 +44,7 @@ namespace StorageService
 
         public override string ToString()
         {
-            return $"Id: {Id}, Title: {Title}, Specification: {Specification}, Price: {Price}, Link: {Link}, Note: {Note}, Estimated Delivery: {EstDelivery}, Quantity: {Quantity}";
+            return $"Id: {Id}, Title: {Title}, Specification: {Specification}, Price: {Price}, Link: {Link}, Note: {Note}, Estimated Delivery: {EstDelivery}, Quantity: {Quantity}, Available: {Available}";
         }
     }
 }

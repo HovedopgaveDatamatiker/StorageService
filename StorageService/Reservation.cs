@@ -19,7 +19,9 @@ namespace StorageService
         public bool IsInProduction { get; set; }
         [DataMember]
         public bool IsDone { get; set; }
-        
+        [DataMember]
+        public string ScheduledDate { get; set; }
+
         public Reservation()
         {
 
@@ -27,7 +29,7 @@ namespace StorageService
 
         public override string ToString()
         {
-            return $"Id: {Id}, Product: {Product}, IsDone: {IsDone}, IsInProduction: {IsInProduction}";
+            return $"Id: {Id}, Product: {Product}, IsDone: {IsDone}, IsInProduction: {IsInProduction}, ScheduledDate: {ScheduledDate}";
         }
 
     }
