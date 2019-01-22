@@ -33,8 +33,11 @@ namespace StorageService
             {
                 conn.Open();
                 String sql = "SELECT * FROM Components";
-                SqlCommand command = new SqlCommand(sql, conn);
-                SqlDataReader reader = command.ExecuteReader();
+                SqlCommand command = new SqlCommand(sql, conn); //ny instans af SqlCommand, som kræver parametrer string og sqlconnection. 
+
+                //retrieving data as soon as it is available, retrieve a read-only, forward-only stream of data from a database. 
+                //Results are returned as the query executes, and are stored in the network buffer on the client until you request them using the Read method of the DataReader. Bruges i While loopet. 
+                SqlDataReader reader = command.ExecuteReader(); 
 
                 while (reader.Read())
                 {
@@ -81,7 +84,7 @@ namespace StorageService
             command.Parameters.AddWithValue("@Quantity", newKomponent.Quantity);
             command.Parameters.AddWithValue("@Available", newKomponent.Available);
 
-            command.ExecuteNonQuery(); //udfører SQL statement "command"
+            command.ExecuteNonQuery(); //udfører SQL statement "command". Used for executing queries that does not return any data. It is used to execute the sql statements like update, insert, delete. ExecuteNonQuery executes the command and returns the number of rows affected
             conn.Close();
         }
 
