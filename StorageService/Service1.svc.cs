@@ -29,9 +29,9 @@ namespace StorageService
         public List<Component> GetComponents()
         {
             List<Component> liste = new List<Component>(); //ny instans af komponent
-            using (SqlConnection conn = new SqlConnection(connectingString))
+            using (SqlConnection conn = new SqlConnection(connectingString)) //åben forbindelse til SQL server
             {
-                conn.Open();
+                conn.Open(); //åbner for forbindelsen
                 String sql = "SELECT * FROM Components";
                 SqlCommand command = new SqlCommand(sql, conn); //ny instans af SqlCommand, som kræver parametrer string og sqlconnection. 
 
@@ -53,7 +53,7 @@ namespace StorageService
                         Quantity = reader.GetInt32(7),
                         Available = reader.GetInt32(8)
 
-                };
+                    };
                     liste.Add(komponent);
                 }
 
@@ -74,7 +74,7 @@ namespace StorageService
             command.CommandText = @"INSERT INTO Components(Id, Title, Specification, Price, Link, Note, EstDelivery, Quantity, Available) 
                                 VALUES (@id, @Title, @Specification, @Price, @Link, @Note, @EstDelivery, @Quantity, @Available)";
 
-            command.Parameters.AddWithValue("@id", newKomponent.Id);
+            command.Parameters.AddWithValue("@id", newKomponent.Id); //skal bruge et parameter name og en object værdi
             command.Parameters.AddWithValue("@Title", newKomponent.Title);
             command.Parameters.AddWithValue("@Specification ", newKomponent.Specification);
             command.Parameters.AddWithValue("@Price", newKomponent.Price);
